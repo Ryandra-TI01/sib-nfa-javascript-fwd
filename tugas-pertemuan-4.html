@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistem Manajemen Transportasi</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+</head>
+<body class="container my-4">
+  <h1 class="text-center mb-4">Sistem Manajemen Transportasi</h1>
+
+  <!--  Input pelanggan -->
+  <form id="formSewa" class="row g-3 mb-4">
+    <div class="col-md-4">
+      <label class="form-label">Nama</label>
+      <input type="text" class="form-control" id="nama" required>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Nomor Telepon</label>
+      <input type="text" class="form-control" id="telepon" required>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Kendaraan Disewa</label>
+      <select class="form-select" id="kendaraan" required>
+        <option selected disabled>Pilih Kendaraan...</option>
+        <option>Mobil</option>
+        <option>Motor</option>
+        <option>Bus</option>
+        <option>Truk</option>
+      </select>
+    </div>
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Sewa Kendaraan</button>
+    </div>
+  </form>
+
+  <!--  Daftar pelanggan -->
+  <table class="table table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th>#</th>
+        <th>Nama</th>
+        <th>No. Telepon</th>
+        <th>Kendaraan Disewa</th>
+      </tr>
+    </thead>
+    <tbody id="daftarPelanggan"></tbody>
+  </table>
+
+  <script>
+    class Pelanggan {
+      constructor(nama, nomorTelepon, kendaraanDisewa) {
+        this.nama = nama;
+        this.nomorTelepon = nomorTelepon;
+        this.kendaraanDisewa = kendaraanDisewa;
+      }
+    }
+
+    // Daftar pelanggan
+    let dataPelanggan = [];
+
+    // Mencatat transaksi penyewaan
+    function tambahPelanggan(nama, nomorTelepon, kendaraanDisewa) {
+      const pelangganBaru = new Pelanggan(nama, nomorTelepon, kendaraanDisewa);
+      dataPelanggan.push(pelangganBaru);
+      tampilkanPelanggan();
+    }
+
+    // Menampilkan daftar pelanggan
+    function tampilkanPelanggan() {
+      const tbody = document.getElementById("daftarPelanggan");
+      tbody.innerHTML = "";
+      dataPelanggan.forEach((p, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${p.nama}</td>
+          <td>${p.nomorTelepon}</td>
+          <td>${p.kendaraanDisewa}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    // Submit form
+    document.getElementById("formSewa").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const nama = document.getElementById("nama").value;
+      const telepon = document.getElementById("telepon").value;
+      const kendaraan = document.getElementById("kendaraan").value;
+
+      tambahPelanggan(nama, telepon, kendaraan);
+
+      e.target.reset();
+    });
+  </script>
+</body>
+</html>
